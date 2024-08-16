@@ -38,11 +38,11 @@ fun NutriAppTheme(
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewNutriAppTheme() {
-    NutriAppTheme {
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewNutriAppTheme() {
+  //  NutriAppTheme {
         // Content for preview
-        LoginScreen()
-    }
-}
+    //    LoginScreen()
+    //}
+//}

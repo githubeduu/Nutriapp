@@ -1,4 +1,4 @@
-package com.example.nutriapp
+package com.example.nutriapp.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,10 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+import com.example.nutriapp.R
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navController: NavController){
 
     var correo by remember {
         mutableStateOf("")
@@ -70,9 +70,20 @@ fun LoginScreen(){
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        TextButton(onClick = { }) {
+        TextButton(onClick = {
+            navController.navigate("registerUser")
+        }) {
+            Text(text = "Registrarse")
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(onClick = {
+            navController.navigate("recoveryPass")
+        }) {
             Text(text = "Recuperar Contraseña")
         }
+
 
     }
 
