@@ -21,12 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.nutriapp.Elements.AlertDialog
 
 data class Usuario(val nombre: String, val Telefono: String, val correo: String, val contrasena: String)
 
 @Composable
-fun RegisterUserScreen(){
+fun RegisterUserScreen(navController: NavController){
 
     var showDialog by remember {
         mutableStateOf(false)
@@ -34,7 +35,8 @@ fun RegisterUserScreen(){
 
     if(showDialog){
         AlertDialog (
-            onDismiss = { showDialog = false}
+            onDismiss = { showDialog = false},
+            message = "Registro de usuario exitosa"
         )
     }
 
@@ -104,14 +106,13 @@ fun RegisterUserScreen(){
             if (nombre.isNotBlank() && telefono.isNotBlank() && correo.isNotBlank() && contrasena.isNotBlank()) {
                 listaUsuario.add(Usuario(nombre, telefono, correo, contrasena))
                 Log.i("RegisterUser", "Usuarios registrados: $listaUsuario")
-                registrationMessage = "Usuario registrado correctamente"
-
                 nombre = ""
                 telefono = ""
                 correo = ""
                 contrasena = ""
 
                 showDialog = true
+                navController.navigate("login")
             } else {
                 registrationMessage = "Por favor complete todos los campos"
             }

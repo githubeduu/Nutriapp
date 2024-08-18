@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun AlertDialog(
-     onDismiss:()->Unit
+     onDismiss:()->Unit,
+     message: String
 ){
     androidx.compose.material3.AlertDialog(
         onDismissRequest = onDismiss,
@@ -32,8 +33,8 @@ fun AlertDialog(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Icon(imageVector = Icons.Default.Info, contentDescription = "Privacy")
-                Text(text = "Privacy policy",
+                Icon(imageVector = Icons.Default.Info, contentDescription = "modal")
+                Text(text = message,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
                 )
@@ -47,20 +48,12 @@ fun AlertDialog(
                 verticalArrangement = Arrangement.Center
             ){
                 Button(
-                    onClick = {}, 
+                    onClick = { onDismiss() },
                     modifier = Modifier
                         .width(180.dp)
                         .padding(10.dp)
                 ){
-                    Text(text = "Privacy Link")
-                }
-                Button(
-                    onClick = {},
-                    modifier = Modifier
-                        .width(180.dp)
-                        .padding(10.dp)
-                ){
-                    Text(text = "GDPR link")
+                    Text(text = "Cerrar")
                 }
             }
         }
