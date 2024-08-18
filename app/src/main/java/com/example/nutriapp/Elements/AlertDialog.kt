@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AlertDialog(
      onDismiss:()->Unit,
+     navigateToLogin: () -> Unit,
      message: String
 ){
     androidx.compose.material3.AlertDialog(
@@ -48,7 +49,9 @@ fun AlertDialog(
                 verticalArrangement = Arrangement.Center
             ){
                 Button(
-                    onClick = { onDismiss() },
+                    onClick = { onDismiss()
+                                navigateToLogin()
+                              },
                     modifier = Modifier
                         .width(180.dp)
                         .padding(10.dp)

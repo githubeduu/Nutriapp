@@ -21,11 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.nutriapp.Elements.AlertDialog
 import com.example.nutriapp.R
 
 @Composable
-fun RecoveryPassScreen(){
+fun RecoveryPassScreen(navController: NavController){
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -33,7 +34,8 @@ fun RecoveryPassScreen(){
     if(showDialog){
         AlertDialog (
             onDismiss = { showDialog = false},
-            message = "Se envió correo electrónico"
+            message = "Se envió correo electrónico",
+            navigateToLogin = { navController.navigate("login") }
         )
     }
     var correo by remember {

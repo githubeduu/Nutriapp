@@ -18,7 +18,7 @@ fun MyAppNavigation() {
                 LoginScreen(navController)
             }
             composable(Routes.RecoveryPassScreen){
-                RecoveryPassScreen()
+                RecoveryPassScreen(navController)
             }
             composable(Routes.RegisterUserScreen){
                 RegisterUserScreen(navController)

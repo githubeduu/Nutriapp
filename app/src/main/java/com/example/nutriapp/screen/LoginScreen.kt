@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nutriapp.R
+import com.example.nutriapp.repository.UserRepository
 
 @Composable
 fun LoginScreen(navController: NavController){
@@ -71,7 +72,7 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            val user = listaUsuario.find { it.correo == correo && it.contrasena == contrasena }
+            val user = UserRepository.usuarios.find { it.correo == correo && it.contrasena == contrasena }
             if (user != null) {
                 mensajeLogin = "Inicio de sesión exitoso"
                 navController.navigate("prescription")
