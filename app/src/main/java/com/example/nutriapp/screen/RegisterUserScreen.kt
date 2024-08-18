@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nutriapp.Elements.AlertDialog
+import com.example.nutriapp.repository.UserRepository
 
 data class Usuario(val nombre: String, val Telefono: String, val correo: String, val contrasena: String)
 
@@ -36,7 +37,8 @@ fun RegisterUserScreen(navController: NavController){
     if(showDialog){
         AlertDialog (
             onDismiss = { showDialog = false},
-            message = "Registro de usuario exitosa"
+            message = "Registro de usuario exitosa",
+            navigateToLogin = {  navController.navigate("login") }
         )
     }
 
@@ -104,7 +106,7 @@ fun RegisterUserScreen(navController: NavController){
 
         Button(onClick = {
             if (nombre.isNotBlank() && telefono.isNotBlank() && correo.isNotBlank() && contrasena.isNotBlank()) {
-                listaUsuario.add(Usuario(nombre, telefono, correo, contrasena))
+                UserRepository.usuarios.add(Usuario(nombre, telefono, correo, contrasena))
                 Log.i("RegisterUser", "Usuarios registrados: $listaUsuario")
                 nombre = ""
                 telefono = ""
@@ -112,7 +114,6 @@ fun RegisterUserScreen(navController: NavController){
                 contrasena = ""
 
                 showDialog = true
-                navController.navigate("login")
             } else {
                 registrationMessage = "Por favor complete todos los campos"
             }
