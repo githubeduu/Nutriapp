@@ -21,11 +21,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.nutriapp.Elements.AlertDialog
 import com.example.nutriapp.R
 
 @Composable
 fun RecoveryPassScreen(){
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
 
+    if(showDialog){
+        AlertDialog (
+            onDismiss = { showDialog = false},
+            message = "Se envió correo electrónico"
+        )
+    }
     var correo by remember {
         mutableStateOf("")
     }
@@ -52,7 +62,7 @@ fun RecoveryPassScreen(){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { } ) {
+        Button(onClick = { showDialog = true } ) {
             Text(text = "Ingresar")
         }
 

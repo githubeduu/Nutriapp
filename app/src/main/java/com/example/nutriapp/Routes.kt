@@ -4,4 +4,5 @@ object Routes {
     var LoginScreen = "login"
     var RecoveryPassScreen = "recoveryPass"
     var RegisterUserScreen = "registerUser"
+    var PrescriptionScreen = "prescription"
 }

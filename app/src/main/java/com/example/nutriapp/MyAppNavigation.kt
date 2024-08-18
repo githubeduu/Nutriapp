@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nutriapp.screen.LoginScreen
+import com.example.nutriapp.screen.PrescriptionScreen
 import com.example.nutriapp.screen.RecoveryPassScreen
 import com.example.nutriapp.screen.RegisterUserScreen
 
@@ -20,7 +21,10 @@ fun MyAppNavigation() {
                 RecoveryPassScreen()
             }
             composable(Routes.RegisterUserScreen){
-                RegisterUserScreen()
+                RegisterUserScreen(navController)
+            }
+            composable(Routes.PrescriptionScreen){
+                PrescriptionScreen()
             }
         } )
 

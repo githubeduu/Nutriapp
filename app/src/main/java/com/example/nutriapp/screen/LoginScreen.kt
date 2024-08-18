@@ -34,6 +34,12 @@ fun LoginScreen(navController: NavController){
         mutableStateOf("")
     }
 
+    var mensajeLogin by remember {
+        mutableStateOf("")
+    }
+
+    val listaUsuario = remember { mutableStateListOf<Usuario>() }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -64,9 +70,25 @@ fun LoginScreen(navController: NavController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { } ) {
+        Button(onClick = {
+            val user = listaUsuario.find { it.correo == correo && it.contrasena == contrasena }
+            if (user != null) {
+                mensajeLogin = "Inicio de sesión exitoso"
+                navController.navigate("prescription")
+            } else {
+                mensajeLogin = "Correo o contraseña incorrectos"
+            }
+        }) {
             Text(text = "Ingresar")
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = mensajeLogin,
+            color = if (mensajeLogin.contains("exitoso")) androidx.compose.ui.graphics.Color.Green
+            else androidx.compose.ui.graphics.Color.Red
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
