@@ -1,8 +1,10 @@
 package com.example.nutriapp.repository
 
 import androidx.compose.runtime.mutableStateListOf
-import com.example.nutriapp.screen.Usuario
 
-object UserRepository{
+
+object UserRepository {
     val usuarios = mutableStateListOf<Usuario>()
 }
+
+data class Usuario(val nombre: String, val telefono: String, val correo: String, val contrasena: String)

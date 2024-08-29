@@ -3,10 +3,9 @@ package com.example.nutriapp.Elements
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
@@ -20,44 +19,58 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AlertDialog(
-     onDismiss:()->Unit,
-     navigateToLogin: () -> Unit,
-     message: String
-){
-    androidx.compose.material3.AlertDialog(
+fun CustomAlertDialog(
+    onDismiss: () -> Unit,
+    navigateToLogin: () -> Unit,
+    message: String
+) {
+    AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { /*TODO*/ },
-        modifier = Modifier.height(250.dp),
-
+        confirmButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                    navigateToLogin()
+                },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(text = "Cerrar", fontSize = 16.sp)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         title = {
             Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(imageVector = Icons.Default.Info, contentDescription = "modal")
-                Text(text = message,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Info icon",
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Text(
+                    text = "Información",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         },
-        
         text = {
-            Column (
-                modifier = Modifier.fillMaxSize(),
+            Column(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
-            ){
-                Button(
-                    onClick = { onDismiss()
-                                navigateToLogin()
-                              },
-                    modifier = Modifier
-                        .width(180.dp)
-                        .padding(10.dp)
-                ){
-                    Text(text = "Cerrar")
-                }
+            ) {
+                Text(
+                    text = message,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
             }
         }
     )

@@ -5,24 +5,24 @@ import androidx.compose.runtime.mutableStateListOf
 object PrescriptionRepository {
     val recetas = mutableStateListOf(
         Receta(
-            "Ensalada de Quinoa y Vegetales",
-            "Una ensalada rica en proteínas y fibra. La quinoa proporciona aminoácidos esenciales, mientras que los vegetales frescos aportan vitaminas y minerales. Ideal para una comida ligera y nutritiva."
+            "Ensalada Chilena",
+            "Una ensalada fresca y saludable hecha con tomate, cebolla, cilantro y aliñada con aceite de oliva y limón. Es ideal como acompañamiento o como una comida ligera por sí sola."
         ),
         Receta(
-            "Smoothie Verde Detox",
-            "Un batido lleno de antioxidantes y vitaminas. Los ingredientes principales son espinacas, manzana verde y pepino, que ayudan a desintoxicar el cuerpo y mejorar la digestión."
+            "Ceviche de Salmón",
+            "El ceviche de salmón es una opción ligera y rica en omega-3. Se prepara con salmón crudo marinado en jugo de limón, con cebolla morada, cilantro y ají. Perfecto para un almuerzo fresco."
         ),
         Receta(
-            "Salmón a la Parrilla con Espárragos",
-            "El salmón es una excelente fuente de ácidos grasos omega-3, que son buenos para el corazón. Los espárragos añaden fibra y vitaminas. Perfecto para una cena saludable y equilibrada."
+            "Quinoa con Verduras al Horno",
+            "La quinoa es una excelente fuente de proteínas y fibra. Esta receta incluye quinoa cocida mezclada con verduras como pimientos, zapallo y espárragos, todas asadas al horno con un toque de aceite de oliva."
         ),
         Receta(
-            "Tacos de Pollo con Salsa de Aguacate",
-            "Estos tacos son ricos en proteínas y grasas saludables gracias al pollo y el aguacate. Acompañados de vegetales frescos, son una opción deliciosa y nutritiva para el almuerzo."
+            "Sopa de Porotos Verdes",
+            "Una sopa nutritiva hecha con porotos verdes, zanahorias, apio y espinacas. Es rica en fibra y vitaminas, ideal para una comida reconfortante y saludable."
         ),
         Receta(
-            "Pudding de Chía con Frutas",
-            "Un postre nutritivo y bajo en calorías. Las semillas de chía son ricas en ácidos grasos omega-3 y fibra. Combínalo con frutas frescas para obtener un snack saludable y lleno de energía."
+            "Pasta Integral con Salsa de Tomate y Albahaca",
+            "Pasta integral acompañada de una salsa de tomate casera con albahaca fresca. Esta receta es una opción saludable que proporciona fibra y antioxidantes, ideal para una cena ligera."
         )
     )
 
