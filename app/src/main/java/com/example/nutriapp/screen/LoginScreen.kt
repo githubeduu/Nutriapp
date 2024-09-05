@@ -96,12 +96,16 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            val user = UserRepository.usuarios.find { it.correo == correo && it.contrasena == contrasena }
-            if (user != null) {
-                mensajeLogin = "Inicio de sesión exitoso"
-                navController.navigate("prescription")
-            } else {
-                mensajeLogin = "Correo o contraseña incorrectos"
+            try {
+                val user = UserRepository.usuarios.find { it.correo == correo && it.contrasena == contrasena }
+                if (user != null) {
+                    mensajeLogin = "Inicio de sesión exitoso"
+                    navController.navigate("prescription")
+                } else {
+                    mensajeLogin = "Correo o contraseña incorrectos"
+                }
+            } catch (e: Exception) {
+                mensajeLogin = "Error al procesar la solicitud: ${e.message}"
             }
         },
             modifier = Modifier.semantics { contentDescription = "Botón inicio de sesión" }

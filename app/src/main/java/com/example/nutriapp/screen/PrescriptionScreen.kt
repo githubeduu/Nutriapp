@@ -16,7 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.nutriapp.repository.PrescriptionRepository
 
 @Composable
@@ -32,7 +35,12 @@ fun PrescriptionScreen() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        Text(text = "Minuta Semanal", style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = "Minuta Semanal",
+            fontSize = 36.sp,
+            color = Color(0xFF003366),
+            style = MaterialTheme.typography.headlineSmall
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -41,12 +49,22 @@ fun PrescriptionScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = receta.nombre, style = MaterialTheme.typography.headlineMedium)
+                    Text(
+                        text = receta.nombre,
+                        fontSize = 22.sp,
+                        color = Color(0xFF000000),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = receta.descripcion, style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = receta.descripcion,
+                        fontSize = 18.sp,
+                        color = Color(0xFF333333),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
             }
         }
