@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -63,6 +66,16 @@ fun RegisterUserScreen(navController: NavController){
     var contrasenaError by remember { mutableStateOf<String?>(null) }
     val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
 
+    //Funcion de orden superior para manejar cambio de valor
+    fun handleTextChange(onValueChange: (String) -> Unit, errorSetter: (String?) -> Unit): (String) -> Unit {
+        return { newValue ->
+            onValueChange(newValue)
+            if (newValue.isNotBlank()) {
+                errorSetter(null)
+            }
+        }
+    }
+
     fun validateInputs(): Boolean {
         var isValid = true
 
@@ -99,9 +112,13 @@ fun RegisterUserScreen(navController: NavController){
 
         return isValid
     }
-
+    val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .padding(bottom = 100.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -118,12 +135,7 @@ fun RegisterUserScreen(navController: NavController){
 
         OutlinedTextField(
             value = nombre,
-            onValueChange = {
-                nombre = it
-                if (it.isNotBlank()) {
-                    nombreError = null
-                }
-            },
+            onValueChange = handleTextChange({ nombre = it }, { nombreError = it }),
             label = { Text(text = "Nombre", fontSize = 22.sp) },
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese nombre" },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -141,12 +153,7 @@ fun RegisterUserScreen(navController: NavController){
 
         OutlinedTextField(
             value = telefono,
-            onValueChange = {
-                telefono = it
-                if (it.isNotBlank()) {
-                    telefonoError = null
-                }
-            },
+            onValueChange = handleTextChange({ telefono = it }, { telefonoError = it }),
             label = { Text(text = "Teléfono", fontSize = 22.sp) },
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese telefono" },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -164,12 +171,7 @@ fun RegisterUserScreen(navController: NavController){
 
         OutlinedTextField(
             value = correo,
-            onValueChange = {
-                correo = it
-                if (it.isNotBlank()) {
-                    correoError = null
-                }
-            },
+            onValueChange = handleTextChange({ correo = it }, { correoError = it }),
             label = { Text(text = "Correo electronico", fontSize = 22.sp) },
             modifier = Modifier.focusable()
                 .semantics { contentDescription = "Ingrese correo electronico" },
@@ -188,12 +190,7 @@ fun RegisterUserScreen(navController: NavController){
 
         OutlinedTextField(
             value = contrasena,
-            onValueChange = {
-                contrasena = it
-                if (it.isNotBlank()) {
-                    contrasenaError = null
-                }
-            },
+            onValueChange = handleTextChange({ contrasena = it }, { contrasenaError = it }),
             label = { Text(text = "Contraseña", fontSize = 22.sp) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese contraseña" },

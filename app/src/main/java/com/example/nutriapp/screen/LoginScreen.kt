@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -46,9 +49,13 @@ fun LoginScreen(navController: NavController){
     var mensajeLogin by remember {
         mutableStateOf("")
     }
-
+    val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .padding(bottom = 100.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -95,10 +102,14 @@ fun LoginScreen(navController: NavController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        //integración del uso de filter
         Button(onClick = {
             try {
-                val user = UserRepository.usuarios.find { it.correo == correo && it.contrasena == contrasena }
-                if (user != null) {
+                val usuariosFiltrados = UserRepository.usuarios.filter {
+                    it.correo.contains(correo, ignoreCase = true) && it.contrasena == contrasena
+                }
+
+                if (usuariosFiltrados.isNotEmpty()) {
                     mensajeLogin = "Inicio de sesión exitoso"
                     navController.navigate("prescription")
                 } else {
@@ -109,9 +120,10 @@ fun LoginScreen(navController: NavController){
             }
         },
             modifier = Modifier.semantics { contentDescription = "Botón inicio de sesión" }
-        ){
+        ) {
             Text(text = "Ingresar", fontSize = 25.sp)
         }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
