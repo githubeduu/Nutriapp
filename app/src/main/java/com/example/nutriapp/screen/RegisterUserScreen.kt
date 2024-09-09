@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -29,25 +32,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.input.*
 import androidx.navigation.NavController
-import com.example.nutriapp.Elements.AlertDialog
+import com.example.nutriapp.Elements.CustomAlertDialog
 import com.example.nutriapp.repository.UserRepository
-
-
-data class Usuario(val nombre: String, val Telefono: String, val correo: String, val contrasena: String)
+import com.example.nutriapp.repository.Usuario
 
 @Composable
 fun RegisterUserScreen(navController: NavController){
 
     var showDialog by remember {
         mutableStateOf(false)
-    }
-
-    if(showDialog){
-        AlertDialog (
-            onDismiss = { showDialog = false},
-            message = "Registro de usuario exitosa",
-            navigateToLogin = {  navController.navigate("login") }
-        )
     }
 
     val listaUsuario = remember {
@@ -66,12 +59,66 @@ fun RegisterUserScreen(navController: NavController){
     var contrasena by remember {
         mutableStateOf("")
     }
-    var registrationMessage by remember {
-        mutableStateOf("")
+
+    var nombreError by remember { mutableStateOf<String?>(null) }
+    var telefonoError by remember { mutableStateOf<String?>(null) }
+    var correoError by remember { mutableStateOf<String?>(null) }
+    var contrasenaError by remember { mutableStateOf<String?>(null) }
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+
+    //Funcion de orden superior para manejar cambio de valor
+    fun handleTextChange(onValueChange: (String) -> Unit, errorSetter: (String?) -> Unit): (String) -> Unit {
+        return { newValue ->
+            onValueChange(newValue)
+            if (newValue.isNotBlank()) {
+                errorSetter(null)
+            }
+        }
     }
 
+    fun validateInputs(): Boolean {
+        var isValid = true
+
+        if (nombre.isBlank()) {
+            nombreError = "Nombre no puede estar vacío"
+            isValid = false
+        } else {
+            nombreError = null
+        }
+
+        if (telefono.isBlank()) {
+            telefonoError = "Teléfono no puede estar vacío"
+            isValid = false
+        } else {
+            telefonoError = null
+        }
+
+        if (correo.isBlank()) {
+            correoError = "Correo electrónico no puede estar vacío"
+            isValid = false
+        } else if (!correo.matches(emailRegex)) {
+            correoError = "Ingrese un correo electrónico válido"
+            isValid = false
+        } else {
+            correoError = null
+        }
+
+        if (contrasena.isBlank()) {
+            contrasenaError = "Contraseña no puede estar vacía"
+            isValid = false
+        } else {
+            contrasenaError = null
+        }
+
+        return isValid
+    }
+    val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .padding(bottom = 100.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -82,69 +129,86 @@ fun RegisterUserScreen(navController: NavController){
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.semantics { contentDescription = "Registro de usuario" }
-            )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = nombre,
-            onValueChange = { nombre = it},
-            label = { Text(text = "Nombre",fontSize = 22.sp)},
-            modifier = Modifier.focusable().semantics { contentDescription = "Ingrese nombre" },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions.Default
-            )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = telefono,
-            onValueChange = { telefono = it},
-            label = { Text(text = "Teléfono",fontSize = 22.sp)},
-            modifier = Modifier.focusable().semantics { contentDescription = "Ingrese telefono" },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions.Default
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            value = nombre,
+            onValueChange = handleTextChange({ nombre = it }, { nombreError = it }),
+            label = { Text(text = "Nombre", fontSize = 22.sp) },
+            modifier = Modifier.focusable().semantics { contentDescription = "Ingrese nombre" },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions.Default,
+            isError = nombreError != null
+        )
+        nombreError?.let {
+            Text(text = it, color = androidx.compose.ui.graphics.Color.Red)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = telefono,
+            onValueChange = handleTextChange({ telefono = it }, { telefonoError = it }),
+            label = { Text(text = "Teléfono", fontSize = 22.sp) },
+            modifier = Modifier.focusable().semantics { contentDescription = "Ingrese telefono" },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions.Default,
+            isError = telefonoError != null
+        )
+        telefonoError?.let {
+            Text(text = it, color = androidx.compose.ui.graphics.Color.Red)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
             value = correo,
-            onValueChange = { correo = it },
-            label = { Text(text = "Correo electronico",fontSize = 22.sp)},
-            modifier = Modifier.focusable().semantics { contentDescription = "Ingrese correo electronico" },
+            onValueChange = handleTextChange({ correo = it }, { correoError = it }),
+            label = { Text(text = "Correo electronico", fontSize = 22.sp) },
+            modifier = Modifier.focusable()
+                .semantics { contentDescription = "Ingrese correo electronico" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done
             ),
-            keyboardActions = KeyboardActions.Default
-            )
+            keyboardActions = KeyboardActions.Default,
+            isError = correoError != null
+        )
+        correoError?.let {
+            Text(text = it, color = androidx.compose.ui.graphics.Color.Red)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = contrasena,
-            onValueChange = { contrasena = it},
-            label = { Text(text = "Contraseña",fontSize = 22.sp)},
+            onValueChange = handleTextChange({ contrasena = it }, { contrasenaError = it }),
+            label = { Text(text = "Contraseña", fontSize = 22.sp) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese contraseña" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
-            keyboardActions = KeyboardActions.Default
+            keyboardActions = KeyboardActions.Default,
+            isError = contrasenaError != null
         )
+        contrasenaError?.let {
+            Text(text = it, color = androidx.compose.ui.graphics.Color.Red)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            if (nombre.isNotBlank() && telefono.isNotBlank() && correo.isNotBlank() && contrasena.isNotBlank()) {
+            if (validateInputs()) {
                 UserRepository.usuarios.add(Usuario(nombre, telefono, correo, contrasena))
                 Log.i("RegisterUser", "Usuarios registrados: $listaUsuario")
                 nombre = ""
@@ -153,22 +217,19 @@ fun RegisterUserScreen(navController: NavController){
                 contrasena = ""
 
                 showDialog = true
-            } else {
-                registrationMessage = "Por favor complete todos los campos"
             }
-         },
+        },
             modifier = Modifier.semantics { contentDescription = "Botón de registro de usuario" }
-        ){
-            Text(text = "Registrarse",fontSize = 22.sp)
+        ) {
+            Text(text = "Registrarse", fontSize = 22.sp)
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = registrationMessage,
-            color = if(registrationMessage.contains("correctamente")) androidx.compose.ui.graphics.Color.Green
-                    else androidx.compose.ui.graphics.Color.Red)
-
     }
 
+    if(showDialog){
+        CustomAlertDialog (
+            onDismiss = { showDialog = false},
+            message = "Registro de usuario exitosa",
+            navigateToLogin = {  navController.navigate("login") }
+        )
+    }
 }
