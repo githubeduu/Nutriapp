@@ -1,4 +1,4 @@
-package com.example.nutriapp.screen
+package com.example.nutriapp.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusable
@@ -33,11 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nutriapp.R
-import com.example.nutriapp.repository.UserRepository
+import com.example.nutriapp.auth.FirebaseAuthService
+import com.example.nutriapp.data.repository.UserRepository
 
 @Composable
 fun LoginScreen(navController: NavController){
 
+    val authService = FirebaseAuthService()
     var correo by remember {
         mutableStateOf("")
     }
@@ -102,24 +104,18 @@ fun LoginScreen(navController: NavController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        //integración del uso de filter
-        Button(onClick = {
-            try {
-                val usuariosFiltrados = UserRepository.usuarios.filter {
-                    it.correo.contains(correo, ignoreCase = true) && it.contrasena == contrasena
+        Button(
+            onClick = {
+                authService.login(correo, contrasena) { isSuccess, errorMessage ->
+                    if (isSuccess) {
+                        mensajeLogin = "Inicio de sesión exitoso"
+                        navController.navigate("nutritionalRecipe")
+                    } else {
+                        mensajeLogin = "Error: $errorMessage"
+                    }
                 }
-
-                if (usuariosFiltrados.isNotEmpty()) {
-                    mensajeLogin = "Inicio de sesión exitoso"
-                    navController.navigate("prescription")
-                } else {
-                    mensajeLogin = "Correo o contraseña incorrectos"
-                }
-            } catch (e: Exception) {
-                mensajeLogin = "Error al procesar la solicitud: ${e.message}"
-            }
-        },
-            modifier = Modifier.semantics { contentDescription = "Botón inicio de sesión" }
+            },
+            modifier = Modifier
         ) {
             Text(text = "Ingresar", fontSize = 25.sp)
         }

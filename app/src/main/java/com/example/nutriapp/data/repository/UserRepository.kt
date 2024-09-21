@@ -1,4 +1,4 @@
-package com.example.nutriapp.repository
+package com.example.nutriapp.data.repository
 
 import androidx.compose.runtime.mutableStateListOf
 

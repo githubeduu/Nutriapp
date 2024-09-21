@@ -1,4 +1,4 @@
-package com.example.nutriapp.screen
+package com.example.nutriapp.ui.screen
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.nutriapp.Elements.CustomAlertDialog
+import com.example.nutriapp.ui.Elements.CustomAlertDialog
 
 @Composable
 fun RecoveryPassScreen(navController: NavController){

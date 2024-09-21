@@ -1,4 +1,4 @@
-package com.example.nutriapp.screen
+package com.example.nutriapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,17 +14,22 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.nutriapp.repository.PrescriptionRepository
+import com.example.nutriapp.data.repository.NutritionalRepository
 
 @Composable
-fun PrescriptionScreen() {
+fun NutritionalRecipeScreen() {
     val scrollState = rememberScrollState()
-    val recetas = PrescriptionRepository.recetas
+    val recetas = NutritionalRepository.recetas
+
+    LaunchedEffect(Unit) {
+        NutritionalRepository.fetchRecetas()
+    }
 
     Column(
         modifier = Modifier
