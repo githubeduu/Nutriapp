@@ -1,4 +1,4 @@
-package com.example.nutriapp.Elements
+package com.example.nutriapp.ui.Elements
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

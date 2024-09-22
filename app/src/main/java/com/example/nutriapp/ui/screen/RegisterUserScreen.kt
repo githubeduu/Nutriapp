@@ -1,4 +1,4 @@
-package com.example.nutriapp.screen
+package com.example.nutriapp.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.focusable
@@ -32,19 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.input.*
 import androidx.navigation.NavController
-import com.example.nutriapp.Elements.CustomAlertDialog
-import com.example.nutriapp.repository.UserRepository
-import com.example.nutriapp.repository.Usuario
+import com.example.nutriapp.auth.FirebaseAuthService
+import com.example.nutriapp.ui.Elements.CustomAlertDialog
+import com.example.nutriapp.data.repository.UserRepository
+import com.example.nutriapp.data.repository.Usuario
 
 @Composable
 fun RegisterUserScreen(navController: NavController){
 
+    val authService = FirebaseAuthService()
     var showDialog by remember {
         mutableStateOf(false)
-    }
-
-    val listaUsuario = remember {
-        mutableStateListOf<Usuario>()
     }
     var nombre by remember {
         mutableStateOf("")
@@ -209,14 +207,21 @@ fun RegisterUserScreen(navController: NavController){
 
         Button(onClick = {
             if (validateInputs()) {
-                UserRepository.usuarios.add(Usuario(nombre, telefono, correo, contrasena))
-                Log.i("RegisterUser", "Usuarios registrados: $listaUsuario")
-                nombre = ""
-                telefono = ""
-                correo = ""
-                contrasena = ""
-
-                showDialog = true
+                // Llamada al método de registro de FirebaseAuthService
+                authService.register(correo, contrasena) { isSuccess, errorMessage ->
+                    if (isSuccess) {
+                        UserRepository.usuarios.add(Usuario(nombre, telefono, correo, contrasena))
+                        Log.i("RegisterUser", "Usuario registrado: $correo")
+                        nombre = ""
+                        telefono = ""
+                        correo = ""
+                        contrasena = ""
+                        showDialog = true
+                    } else {
+                        // Manejo de error
+                        contrasenaError = errorMessage // Mostrar el error en el campo de contraseña
+                    }
+                }
             }
         },
             modifier = Modifier.semantics { contentDescription = "Botón de registro de usuario" }

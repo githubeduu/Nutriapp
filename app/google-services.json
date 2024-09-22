@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "575246786993",
+    "project_id": "nutriapp-b504e",
+    "storage_bucket": "nutriapp-b504e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575246786993:android:1cc87efd769ab8913f1d90",
+        "android_client_info": {
+          "package_name": "com.example.nutriapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC64OZU2ZcmkYch4-pUfIOhamlbZ0UF7qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
