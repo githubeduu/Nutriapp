@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -113,11 +114,17 @@ fun RecoveryPassScreen(navController: NavController){
 
     }
 
-    if(showDialog){
-        CustomAlertDialog (
-            onDismiss = { showDialog = false},
-            message = "Se envió correo electrónico",
-            navigateToLogin = { navController.navigate("login") }
+    TextButton(
+        onClick = { navController.navigate("login") }
+    ) {
+        Text(text = "Volver", fontSize = 25.sp)
+    }
+
+    if (showDialog) {
+        CustomAlertDialog(
+            onDismiss = { showDialog = false },
+            message = "Registro de usuario exitoso",
+            onConfirm = { navController.navigate("login") }
         )
     }
 }

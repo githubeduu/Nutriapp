@@ -79,7 +79,7 @@ fun LoginScreen(navController: NavController){
         OutlinedTextField(
             value = correo,
             onValueChange = { correo = it},
-            label = { Text(text = "Correo electrónico",fontSize = 22.sp) },
+            label = { Text(text = "Correo electrónico",fontSize = 28.sp) },
             modifier = Modifier.focusable().semantics { contentDescription = "Correo electronico" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
@@ -92,7 +92,7 @@ fun LoginScreen(navController: NavController){
         OutlinedTextField(
             value = contrasena,
             onValueChange = { contrasena = it },
-            label = { Text(text = "Contraseña",fontSize = 22.sp)},
+            label = { Text(text = "Contraseña",fontSize = 28.sp)},
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.focusable().semantics { contentDescription = "Contraseña" },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -109,7 +109,7 @@ fun LoginScreen(navController: NavController){
                 authService.login(correo, contrasena) { isSuccess, errorMessage ->
                     if (isSuccess) {
                         mensajeLogin = "Inicio de sesión exitoso"
-                        navController.navigate("nutritionalRecipe")
+                        navController.navigate("home")
                     } else {
                         mensajeLogin = "Error: $errorMessage"
                     }
@@ -117,7 +117,7 @@ fun LoginScreen(navController: NavController){
             },
             modifier = Modifier
         ) {
-            Text(text = "Ingresar", fontSize = 25.sp)
+            Text(text = "Ingresar", fontSize = 30.sp)
         }
 
 

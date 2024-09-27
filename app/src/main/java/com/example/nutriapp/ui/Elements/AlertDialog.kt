@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CustomAlertDialog(
     onDismiss: () -> Unit,
-    navigateToLogin: () -> Unit,
+    onConfirm: () -> Unit,
     message: String
 ) {
     AlertDialog(
@@ -30,7 +30,7 @@ fun CustomAlertDialog(
             Button(
                 onClick = {
                     onDismiss()
-                    navigateToLogin()
+                    onConfirm()
                 },
                 modifier = Modifier
                     .padding(16.dp)
