@@ -19,8 +19,9 @@ object NutritionalRepository{
                 recetaList?.forEach { recetaMap ->
                     val nombre = recetaMap["nombre"] as? String
                     val descripcion = recetaMap["descripcion"] as? String
-                    if (nombre != null && descripcion != null) {
-                        val receta = Receta(nombre, descripcion)
+                    val dia = recetaMap["dia"] as? String
+                    if (nombre != null && descripcion != null && dia != null) {
+                        val receta = Receta(nombre, descripcion, dia)
                         recetas.add(receta)
                     }
                 }

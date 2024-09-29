@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -35,23 +36,19 @@ import androidx.navigation.NavController
 import com.example.nutriapp.R
 import com.example.nutriapp.auth.FirebaseAuthService
 import com.example.nutriapp.data.repository.UserRepository
+import com.example.nutriapp.ui.Elements.CustomAlertDialog
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(navController: NavController) {
 
     val authService = FirebaseAuthService()
-    var correo by remember {
-        mutableStateOf("")
-    }
+    var correo by remember { mutableStateOf("") }
+    var contrasena by remember { mutableStateOf("") }
+    var mostrarDialogo by remember { mutableStateOf(false) }  // Estado para controlar el popup
+    var mensajeError by remember { mutableStateOf("") }       // Estado para el mensaje de error
 
-    var contrasena by remember {
-        mutableStateOf("")
-    }
-
-    var mensajeLogin by remember {
-        mutableStateOf("")
-    }
     val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,46 +58,57 @@ fun LoginScreen(navController: NavController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.logo),
+        // Contenido de la pantalla de login
+        Image(
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo de la aplicación",
-            modifier = Modifier.size(300.dp).semantics { contentDescription = "Logo de la aplicación" })
+            modifier = Modifier
+                .size(300.dp)
+                .semantics { contentDescription = "Logo de la aplicación" }
+        )
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        Text(text = "Bienvenido",
-             fontSize = 35.sp,
-             fontWeight = FontWeight.Bold,
-             color = MaterialTheme.colorScheme.primary,
-             modifier = Modifier.semantics { contentDescription = "Texto de bienvenida" }
-            )
+        Text(
+            text = "Bienvenido",
+            fontSize = 35.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.semantics { contentDescription = "Texto de bienvenida" }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = correo,
-            onValueChange = { correo = it},
-            label = { Text(text = "Correo electrónico",fontSize = 22.sp) },
-            modifier = Modifier.focusable().semantics { contentDescription = "Correo electronico" },
+            onValueChange = { correo = it },
+            label = { Text(text = "Correo electrónico", fontSize = 28.sp) },
+            modifier = Modifier
+                .focusable()
+                .semantics { contentDescription = "Correo electronico" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
-            keyboardActions = KeyboardActions.Default)
+            keyboardActions = KeyboardActions.Default
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = contrasena,
             onValueChange = { contrasena = it },
-            label = { Text(text = "Contraseña",fontSize = 22.sp)},
+            label = { Text(text = "Contraseña", fontSize = 28.sp) },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.focusable().semantics { contentDescription = "Contraseña" },
+            modifier = Modifier
+                .focusable()
+                .semantics { contentDescription = "Contraseña" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions.Default
-            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -108,28 +116,21 @@ fun LoginScreen(navController: NavController){
             onClick = {
                 authService.login(correo, contrasena) { isSuccess, errorMessage ->
                     if (isSuccess) {
-                        mensajeLogin = "Inicio de sesión exitoso"
-                        navController.navigate("nutritionalRecipe")
+                        // Login exitoso, navegar a la siguiente pantalla
+                        navController.navigate("home")
                     } else {
-                        mensajeLogin = "Error: $errorMessage"
+                        // Mostrar el popup con el mensaje de error
+                        mensajeError = errorMessage ?: "Error desconocido"
+                        mostrarDialogo = true
                     }
                 }
             },
             modifier = Modifier
         ) {
-            Text(text = "Ingresar", fontSize = 25.sp)
+            Text(text = "Ingresar", fontSize = 30.sp)
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = mensajeLogin,
-            color = if (mensajeLogin.contains("exitoso")) androidx.compose.ui.graphics.Color.Green
-            else androidx.compose.ui.graphics.Color.Red
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
 
         TextButton(onClick = {
             navController.navigate("registerUser")
@@ -145,7 +146,13 @@ fun LoginScreen(navController: NavController){
             Text(text = "Recuperar Contraseña", fontSize = 25.sp)
         }
 
-
+        // Mostrar el CustomAlertDialog cuando `mostrarDialogo` es true
+        if (mostrarDialogo) {
+            CustomAlertDialog(
+                onDismiss = { mostrarDialogo = false },
+                onConfirm = { mostrarDialogo = false },
+                message = mensajeError
+            )
+        }
     }
-
 }

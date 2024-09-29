@@ -5,4 +5,6 @@ object Routes {
     var RecoveryPassScreen = "recoveryPass"
     var RegisterUserScreen = "registerUser"
     var NutritionalRecipeScreen = "nutritionalRecipe"
+    var HomeScreen = "home"
+    var AccountScreen = "account"
 }

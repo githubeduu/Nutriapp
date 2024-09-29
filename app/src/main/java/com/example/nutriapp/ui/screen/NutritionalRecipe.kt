@@ -48,29 +48,46 @@ fun NutritionalRecipeScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        recetas.forEach { receta ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = receta.nombre,
-                        fontSize = 22.sp,
-                        color = Color(0xFF000000),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = receta.descripcion,
-                        fontSize = 18.sp,
-                        color = Color(0xFF333333),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+        // Grouping the recipes by day
+        val recetasPorDia = recetas.groupBy { it.dia }
+
+        recetasPorDia.forEach { (dia, recetasDelDia) ->
+            // Display the day as a header
+            Text(
+                text = dia,
+                fontSize = 28.sp,
+                color = Color(0xFF003366),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(vertical = 12.dp)
+            )
+
+            recetasDelDia.forEach { receta ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = receta.nombre,
+                            fontSize = 22.sp,
+                            color = Color(0xFF000000),
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = receta.descripcion,
+                            fontSize = 18.sp,
+                            color = Color(0xFF333333),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
             }
+
+            // Add space after each day section
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

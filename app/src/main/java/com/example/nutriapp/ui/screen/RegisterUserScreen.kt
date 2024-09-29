@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -34,8 +35,6 @@ import androidx.compose.ui.text.input.*
 import androidx.navigation.NavController
 import com.example.nutriapp.auth.FirebaseAuthService
 import com.example.nutriapp.ui.Elements.CustomAlertDialog
-import com.example.nutriapp.data.repository.UserRepository
-import com.example.nutriapp.data.repository.Usuario
 
 @Composable
 fun RegisterUserScreen(navController: NavController){
@@ -134,7 +133,7 @@ fun RegisterUserScreen(navController: NavController){
         OutlinedTextField(
             value = nombre,
             onValueChange = handleTextChange({ nombre = it }, { nombreError = it }),
-            label = { Text(text = "Nombre", fontSize = 22.sp) },
+            label = { Text(text = "Nombre", fontSize = 28.sp) },
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese nombre" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
@@ -152,7 +151,7 @@ fun RegisterUserScreen(navController: NavController){
         OutlinedTextField(
             value = telefono,
             onValueChange = handleTextChange({ telefono = it }, { telefonoError = it }),
-            label = { Text(text = "Teléfono", fontSize = 22.sp) },
+            label = { Text(text = "Teléfono", fontSize = 28.sp) },
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese telefono" },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Phone,
@@ -170,7 +169,7 @@ fun RegisterUserScreen(navController: NavController){
         OutlinedTextField(
             value = correo,
             onValueChange = handleTextChange({ correo = it }, { correoError = it }),
-            label = { Text(text = "Correo electronico", fontSize = 22.sp) },
+            label = { Text(text = "Correo electronico", fontSize = 28.sp) },
             modifier = Modifier.focusable()
                 .semantics { contentDescription = "Ingrese correo electronico" },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -189,7 +188,7 @@ fun RegisterUserScreen(navController: NavController){
         OutlinedTextField(
             value = contrasena,
             onValueChange = handleTextChange({ contrasena = it }, { contrasenaError = it }),
-            label = { Text(text = "Contraseña", fontSize = 22.sp) },
+            label = { Text(text = "Contraseña", fontSize = 28.sp) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.focusable().semantics { contentDescription = "Ingrese contraseña" },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -207,34 +206,48 @@ fun RegisterUserScreen(navController: NavController){
 
         Button(onClick = {
             if (validateInputs()) {
-                // Llamada al método de registro de FirebaseAuthService
-                authService.register(correo, contrasena) { isSuccess, errorMessage ->
+                // Llamada al método de registro de FirebaseAuthService con los nuevos parámetros
+                authService.register(
+                    correo,
+                    contrasena,
+                    nombre,
+                    telefono
+                ) { isSuccess, errorMessage ->
                     if (isSuccess) {
-                        UserRepository.usuarios.add(Usuario(nombre, telefono, correo, contrasena))
-                        Log.i("RegisterUser", "Usuario registrado: $correo")
+                        Log.i(
+                            "RegisterUser",
+                            "Usuario registrado exitosamente en FirebaseAuth y Firestore."
+                        )
                         nombre = ""
                         telefono = ""
                         correo = ""
                         contrasena = ""
                         showDialog = true
                     } else {
-                        // Manejo de error
-                        contrasenaError = errorMessage // Mostrar el error en el campo de contraseña
+                        contrasenaError = errorMessage
                     }
                 }
             }
         },
             modifier = Modifier.semantics { contentDescription = "Botón de registro de usuario" }
         ) {
-            Text(text = "Registrarse", fontSize = 22.sp)
+            Text(text = "Registrarse", fontSize = 30.sp)
         }
-    }
 
-    if(showDialog){
-        CustomAlertDialog (
-            onDismiss = { showDialog = false},
-            message = "Registro de usuario exitosa",
-            navigateToLogin = {  navController.navigate("login") }
-        )
+        TextButton(
+            onClick = { navController.navigate("login") }
+        ) {
+            Text(text = "Volver", fontSize = 25.sp)
+        }
+
+
+        if (showDialog) {
+            CustomAlertDialog(
+                onDismiss = { showDialog = false },
+                message = "Registro de usuario exitoso",
+                onConfirm = { navController.navigate("login") }
+            )
+        }
+
     }
 }
