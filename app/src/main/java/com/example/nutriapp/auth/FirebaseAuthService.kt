@@ -1,10 +1,12 @@
 package com.example.nutriapp.auth
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class FirebaseAuthService {
+open class FirebaseAuthService {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
 
@@ -39,17 +41,23 @@ class FirebaseAuthService {
             }
     }
 
-    fun login(email: String, password: String, onComplete: (Boolean, String?) -> Unit){
+    fun login(email: String, password: String, onComplete: (Boolean, String?) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if(task.isSuccessful){
+                if (task.isSuccessful) {
                     onComplete(true, null)
-                }else{
-                    onComplete(false, task.exception?.message)
+                } else {
+                    val exception = task.exception
+                    val errorMessage = when (exception) {
+                        is FirebaseAuthInvalidCredentialsException -> "La contraseña o el correo es incorrecto."
+                        is FirebaseAuthInvalidUserException -> "El correo electrónico no está registrado."
+                        else -> "Error desconocido: ${exception?.message}"
+                    }
+                    onComplete(false, errorMessage)
                 }
-
             }
     }
+
 
     fun logout(onResult: (Boolean) -> Unit) {
         try {

@@ -111,14 +111,14 @@ fun RecoveryPassScreen(navController: NavController){
             Text(text = "Recuperar contraseña", fontSize = 22.sp)
         }
 
-
+        TextButton(
+            onClick = { navController.navigate("login") }
+        ) {
+            Text(text = "Volver", fontSize = 25.sp)
+        }
     }
 
-    TextButton(
-        onClick = { navController.navigate("login") }
-    ) {
-        Text(text = "Volver", fontSize = 25.sp)
-    }
+
 
     if (showDialog) {
         CustomAlertDialog(

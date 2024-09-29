@@ -1,0 +1,59 @@
+{
+  "testMatrix": {
+    "testEnvironment": "instrumentation",
+    "testType": "integration",
+    "shardCount": 1,
+    "tests": [
+      {
+        "app": "path/to/app.apk",
+        "test": "path/to/test.apk",
+        "device": {
+          "model": "Nexus6",
+          "version": "30",
+          "locale": "en_US",
+          "orientation": "portrait"
+        }
+      },
+      {
+        "app": "path/to/app.apk",
+        "test": "path/to/test.apk",
+        "device": {
+          "model": "Pixel2",
+          "version": "30",
+          "locale": "en_US",
+          "orientation": "portrait"
+        }
+      },
+      {
+        "app": "path/to/app.apk",
+        "test": "path/to/test.apk",
+        "device": {
+          "model": "Pixel4",
+          "version": "30",
+          "locale": "en_US",
+          "orientation": "portrait"
+        }
+      },
+      {
+        "app": "path/to/app.apk",
+        "test": "path/to/test.apk",
+        "device": {
+          "model": "GalaxyS9",
+          "version": "30",
+          "locale": "en_US",
+          "orientation": "portrait"
+        }
+      },
+      {
+        "app": "path/to/app.apk",
+        "test": "path/to/test.apk",
+        "device": {
+          "model": "OnePlus5",
+          "version": "30",
+          "locale": "en_US",
+          "orientation": "portrait"
+        }
+      }
+    ]
+  }
+}

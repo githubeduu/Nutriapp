@@ -36,7 +36,6 @@ fun AccountScreen(navController: NavController) {
     var showDeleteDialog by remember { mutableStateOf(false) }
     var deleteSuccess by remember { mutableStateOf(false) }
 
-    // Corrutina para manejar la ejecución
     val coroutineScope = rememberCoroutineScope()
 
     // Cargar datos del usuario al iniciar la pantalla
